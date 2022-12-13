@@ -13,3 +13,6 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 @app.route('/')
 def hello_world():
     return 'Welcome to Flask!'
+
+if __name__ == '__main__':
+    app.run()

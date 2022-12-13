@@ -237,6 +237,14 @@ python-versions = ">=3.7"
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "railway"
+version = "0.0.4"
+description = "Infrastructure, Instantly"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "setuptools"
 version = "65.6.3"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
@@ -300,7 +308,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "c899ec7437478b8200a7c84087783eb7915ffd71c6ea7cb97981c70f32b88178"
+content-hash = "7091736cdd6ffe86117a4e04baa2e9445b90d4270bbebf1f0338437fc1329f1f"
 
 [metadata.files]
 attrs = [
@@ -420,6 +428,10 @@ pytest = [
 python-dotenv = [
     {file = "python-dotenv-0.21.0.tar.gz", hash = "sha256:b77d08274639e3d34145dfa6c7008e66df0f04b7be7a75fd0d5292c191d79045"},
     {file = "python_dotenv-0.21.0-py3-none-any.whl", hash = "sha256:1684eb44636dd462b66c3ee016599815514527ad99965de77f43e0944634a7e5"},
+]
+railway = [
+    {file = "railway-0.0.4-py3-none-any.whl", hash = "sha256:7e42035494bf107bee9a81a6ccb8f7cd288a59423309a02f737b6c38a9edd964"},
+    {file = "railway-0.0.4.tar.gz", hash = "sha256:b45aab1b360c7648d5d1993618d118f918c9cfe18f8a31d86a59b81c9439bb41"},
 ]
 setuptools = [
     {file = "setuptools-65.6.3-py3-none-any.whl", hash = "sha256:57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54"},
