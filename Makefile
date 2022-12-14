@@ -1,5 +1,5 @@
 dev:
-	poetry run flask --app page_analyzer:app run
+	poetry run flask --app page-analyzer/app.py:app run
 
 install: # install poetry
 	poetry install
