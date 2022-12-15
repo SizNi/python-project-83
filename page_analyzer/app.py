@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, render_template
 import os
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -11,8 +11,8 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 
 @app.route('/')
-def hello_world():
-    return 'Welcome to Flask, pidor!'
+def start():
+    return render_template('main_page.html')
 
 if __name__ == '__main__':
     app.run()
