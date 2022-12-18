@@ -2,9 +2,10 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, request
 import os
 import jinja2
-from connection import connect_db
 import datetime
-from url_validator import url_val
+from page_analyzer.connection import connect_db
+from page_analyzer.url_validator import url_val
+
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
