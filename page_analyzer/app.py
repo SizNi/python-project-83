@@ -35,7 +35,6 @@ def save_data():
         print('Insert into db successfully')
         cur.execute("SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
         data = cur.fetchall()
-        print(f'{data}\nread db succesfully')
         return render_template(
             'urls.html',
             data=data
@@ -53,7 +52,6 @@ def urls():
     cur = conn.cursor()
     cur.execute("SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
     data = cur.fetchall()
-    print(f'{data}\nRead db succesfully')
     return render_template(
         'urls.html',
         data=data
@@ -65,7 +63,6 @@ def id_urls(id):
     cur = conn.cursor()
     cur.execute("SELECT * FROM urls WHERE id=(%s);", [id])
     data = cur.fetchall()
-    print(f'{data}\nRead db succesfully')
     return render_template(
         'id_urls.html',
         data=data
