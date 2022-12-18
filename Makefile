@@ -15,3 +15,7 @@ lint: # запуск flake8 на проект python-project-50
 PORT ?= 8000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+
+# не забыть потом убрать
+make railway:
+	PGPASSWORD=ryMRnSq9N5IeIfXKTh2D psql -h containers-us-west-140.railway.app -U postgres -p 7454 -d railway
