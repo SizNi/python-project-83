@@ -20,42 +20,42 @@ def start():
     return render_template('main_page.html')
 
 
-@app.post('/urls')
+@app.route('/urls', methods=['GET', 'POST'])
 def save_data():
-    url = request.form.get('url')
-    dt_now = str(datetime.datetime.now())
-    # отправляем на проверку
-    url = str(url_val(url))
-    if url is not False:
+    if request.method == 'POST':
+        url = request.form.get('url')
+        dt_now = str(datetime.datetime.now())
+        # отправляем на проверку
+        url = str(url_val(url))
+        if url is not False:
+            conn = connect_db()
+            cur = conn.cursor()
+            cur.execute(
+                """INSERT INTO urls (name, created_at) VALUES (%s,%s);""", (url, dt_now))
+            conn.commit()
+            print('Insert into db successfully')
+            cur.execute(
+                "SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
+            data = cur.fetchall()
+            return render_template(
+                'urls.html',
+                data=data
+            )
+        else:
+            return render_template(
+                'main_page.html',
+                data=data
+            )
+    else:
         conn = connect_db()
         cur = conn.cursor()
-        cur.execute(
-            """INSERT INTO urls (name, created_at) VALUES (%s,%s);""", (url, dt_now))
-        conn.commit()
-        print('Insert into db successfully')
         cur.execute("SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
         data = cur.fetchall()
         return render_template(
             'urls.html',
             data=data
         )
-    else:
-        return render_template(
-            'main_page.html',
-            data=data
-        )
 
-
-@app.route('/urls')
-def urls():
-    conn = connect_db()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
-    data = cur.fetchall()
-    return render_template(
-        'urls.html',
-        data=data
-    )
 
 @app.route('/urls/<id>')
 def id_urls(id):
@@ -67,7 +67,7 @@ def id_urls(id):
         'id_urls.html',
         data=data
     )
-    
+
 
 if __name__ == '__main__':
     app.run()
