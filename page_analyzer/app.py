@@ -83,7 +83,6 @@ def save_data():
 def id_urls(id):
     conn = connect_db()
     cur = conn.cursor()
-    print(id)
     cur.execute("SELECT * FROM urls WHERE id=(%s);", [id])
     data = cur.fetchall()
     messages = get_flashed_messages(with_categories=True)
@@ -93,6 +92,48 @@ def id_urls(id):
         messages=messages
     )
 
+
+@app.route('/urls/<id>/checks', methods=['GET', 'POST'])
+def url_check(id):
+    # подключаемся к базе urls
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("SELECT name, created_at FROM urls WHERE id=(%s);", [id])
+    data = cur.fetchall()
+    time = str(data[0][1])[:10]
+    # достаем старые проверки
+    cur.execute("SELECT * FROM url_checks WHERE url_id=(%s);", [id])
+    data_checks = cur.fetchall()
+    # messages = get_flashed_messages(with_categories=True)
+    # если дата не пустая и гет
+    if request.method == 'GET' and data_checks != []:
+        return render_template(
+            'url_check.html',
+            id=id,
+            url=data[0][0],
+            time=time,
+            data_checks=data_checks
+        )
+    elif request.method == 'GET' and data_checks == []:
+        return render_template(
+            'url_check.html',
+            id=id,
+            url=data[0][0],
+            time=time
+        )
+    elif request.method == 'POST':
+        # вставляем проверку (пока липовую)
+        dt_now = str(datetime.datetime.now())
+        cur.execute(
+            """INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s,%s,%s);""", (id, 200, dt_now)
+            )
+        conn.commit()
+        print('Insert into db Cheks successfully')
+        flash('Success', 'sucess')
+        return redirect(
+            url_for('url_check', id=id)
+            )
+        
 
 if __name__ == '__main__':
     app.run()
