@@ -1,17 +1,33 @@
 import validators
 from urllib.parse import urlparse
+from page_analyzer.connection import connect_db
 
 
 def url_val(url):
-    if url is not None:
+    # проверка на пустое поле
+    if url == '':
+        return 'error none'
+    elif url != '':
         # добавляем https если его нет
         url = normalize_ur(url)
         if validators.url(url):
             o = urlparse(url)
             # возращаем нормализованный юрл
-            return f'{o.scheme}://{o.netloc}'
-    else:
-        return False
+            normalize_url = f'{o.scheme}://{o.netloc}'
+            # будем проверять на наличие в базе
+            conn = connect_db()
+            cur = conn.cursor()
+            cur.execute(
+                "SELECT id,name FROM urls WHERE name = (%s);", [normalize_url])
+            data = cur.fetchall()
+            # если не нашлось:
+            if data == []:
+                return normalize_url
+            # если нашлось - возвращаем ошибку и id:
+            else:
+                return ('error, in base', data[0][0])     
+        else:
+            return 'error format'
 
 
 def normalize_ur(url):
