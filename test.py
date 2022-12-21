@@ -6,9 +6,9 @@ def test(id):
     # будем проверять на наличие в базе
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM url_checks WHERE url_id=(%s);", [id])
+    cur.execute("SELECT created_at FROM url_checks WHERE url_id=(%s) ORDER BY created_at DESC NULLS LAST LIMIT 1;", [id])
     data_checks = cur.fetchall()
-    print(data_checks)
+    print(str(data_checks[0][0])[:10])
 
-id = 50
+id = 49
 test(id)

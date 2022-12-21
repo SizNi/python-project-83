@@ -100,7 +100,13 @@ def url_check(id):
     cur = conn.cursor()
     cur.execute("SELECT name, created_at FROM urls WHERE id=(%s);", [id])
     data = cur.fetchall()
-    time = str(data[0][1])[:10]
+    # добавляем время последней проверки
+    cur.execute("SELECT created_at FROM url_checks WHERE url_id=(%s) ORDER BY created_at DESC NULLS LAST LIMIT 1;", [id])
+    data_time = cur.fetchall()
+    if data_time != []:
+        time = str(data_time[0][0])[:10]
+    else:
+        time = ''
     # достаем старые проверки
     cur.execute("SELECT * FROM url_checks WHERE url_id=(%s);", [id])
     data_checks = cur.fetchall()
