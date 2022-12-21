@@ -58,6 +58,7 @@ def save_data():
             cur.execute(
                 "SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
             data = cur.fetchall()
+            flash('Success', 'sucess')
             return render_template(
                 'urls.html',
                 data=data
