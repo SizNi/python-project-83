@@ -44,13 +44,17 @@
           </table>
         </div>
         {% with messages = get_flashed_messages(with_categories = True) %}
-          {% if messages %}
+        {% if messages %}
+        {% for category, message in messages %}
+          {% if category == 'error' %}
+            <div class="alert alert-danger" role="alert">
+          {% else %}
             <div class="alert alert-success" role="alert">
-              {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-              {% endfor %}
-            </div>
           {% endif %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </div>
+      {% endif %}
         {% endwith %}
         <h2 class="mt-5 mb-3">Проверки</h2>
         <form method="post" action="/urls/{{ id }}/checks">

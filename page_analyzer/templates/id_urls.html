@@ -24,13 +24,17 @@
     <main class="flex-grow-1">
       <div class="container-lg mt-3">
         <h1>Сайты</h1>
-        {% if messages %}
-        <div class="alert alert-primary" role="alert">
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </div>
-      {% endif %}
+          {% if messages %}
+            {% for category, message in messages %}
+              {% if category == 'error' %}
+                <div class="alert alert-danger" role="alert">
+              {% else %}
+                <div class="alert alert-success" role="alert">
+              {% endif %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </div>
+          {% endif %}
         <div class="table-responsive">
           <table class="table table-bordered table-hover text-nowrap" data-test="urls">
             <tbody>

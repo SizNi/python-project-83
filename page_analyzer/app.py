@@ -5,6 +5,7 @@ import jinja2
 import datetime
 from page_analyzer.connection import connect_db
 from page_analyzer.url_validator import url_val
+from page_analyzer.request_url import req_url
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -128,14 +129,23 @@ def url_check(id):
             time=time
         )
     elif request.method == 'POST':
-        # вставляем проверку (пока липовую)
-        dt_now = str(datetime.datetime.now())
-        cur.execute(
-            """INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s,%s,%s);""", (id, 200, dt_now)
+        # извлекаем url
+        cur.execute("SELECT name FROM urls WHERE id=(%s);", [id])
+        url = cur.fetchall()
+        # отправляем на проверку
+        response = req_url(url[0][0])
+        # добавляем флеш в зависимости от ответа и вставляем если можем
+        if response == 200:
+            flash('All nice!', 'sucess')
+            # вставляем проверку
+            dt_now = str(datetime.datetime.now())
+            cur.execute(
+            """INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s,%s,%s);""", (id, response, dt_now)
             )
-        conn.commit()
-        print('Insert into db Cheks successfully')
-        flash('Success', 'sucess')
+            conn.commit()
+            print('Insert into db Cheks successfully')
+        else:
+            flash('Bad request', 'error')
         return redirect(
             url_for('url_check', id=id)
             )
