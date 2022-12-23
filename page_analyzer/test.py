@@ -1,26 +1,21 @@
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect, get_flashed_messages, url_for
 import os
 import jinja2
-from connection import connect_db
-from url_validator import url_val
+import datetime
+from page_analyzer.connection import connect_db
+from page_analyzer.url_validator import url_val
+from page_analyzer.request_url import req_url
+from page_analyzer.find_tags import tags_check
+from page_analyzer.code_insert import c_insert
 
 
-def id_urls():
+def test():
     conn = connect_db()
     cur = conn.cursor()
     cur.execute(
-        "SELECT url_id FROM url_checks;"
-    )
-    data = cur.fetchall()
-    max_numbers = data
-    print(max_numbers)
-    cur.execute(
-        "SELECT url_id, created_at, status_code FROM url_checks;"
-    )
-    data_checks = cur.fetchall()
-    print(len(data_checks))
-    print(data_checks[0])
+        "SELECT id, name FROM urls ORDER BY id DESC NULLS LAST;")
+    data_left = cur.fetchall()
+    print(data_left)
 
-
-id_urls()
+test()

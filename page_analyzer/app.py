@@ -7,6 +7,7 @@ from page_analyzer.connection import connect_db
 from page_analyzer.url_validator import url_val
 from page_analyzer.request_url import req_url
 from page_analyzer.find_tags import tags_check
+from page_analyzer.code_insert import c_insert, data_addition
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -28,15 +29,16 @@ def start():
 
 @app.route('/urls', methods=['GET', 'POST'])
 def save_data():
+    # получаем правые два столбца
     if request.method == 'POST':
+        data = []
         url = request.form.get('url')
         dt_now = str(datetime.datetime.now())
-        print(url)
         # отправляем на проверку
         url = url_val(url)
         # ошибка в случае невведенного адреса
         if url == 'error none':
-            flash("URL can't be empty!", 'error')
+            flash("Поле ввода не может быть пустым!", 'error')
             return redirect('/')
         # ошибка на False от валидатора
         elif url == 'error format':
@@ -44,9 +46,8 @@ def save_data():
             return redirect('/')
         # ошибка в базе такой урл уже есть
         elif url[0] == 'error, in base':
-            flash("Already in base", 'error')
+            flash("Страница уже была добавлена", 'error')
             id = url[1]
-            print(id)
             return redirect(
                 url_for('id_urls', id=id)
             )
@@ -58,9 +59,17 @@ def save_data():
             conn.commit()
             print('Insert into db successfully')
             cur.execute(
-                "SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
-            data = cur.fetchall()
-            flash('Success', 'sucess')
+                "SELECT id, name FROM urls ORDER BY id DESC NULLS LAST;")
+            data_left = cur.fetchall()
+            data_right = c_insert()
+            data = data_addition(data_left, data_right)
+            flash('Cтраница успешно добавлена!', 'sucess')
+            return redirect (
+                url_for(
+                    'url_check',
+                    id = data_left[0][0]
+            )
+                )
             return render_template(
                 'urls.html',
                 data=data
@@ -73,8 +82,13 @@ def save_data():
     else:
         conn = connect_db()
         cur = conn.cursor()
-        cur.execute("SELECT * FROM urls ORDER BY created_at DESC NULLS LAST;")
-        data = cur.fetchall()
+        cur.execute(
+            "SELECT id, name FROM urls ORDER BY id DESC;")
+        data_left = cur.fetchall()
+        data_right = c_insert()
+        data = data_addition(data_left, data_right)
+        print(f'{data_right}--------')
+        print(data)
         return render_template(
             'urls.html',
             data=data
@@ -94,8 +108,8 @@ def id_urls(id):
     if data_checks != []:
         time = str(data_checks[-1][0])[:10]
     else:
-        time = 0
-        data_checks = [(0)]
+        time = ''
+        data_checks = [('')]
     messages = get_flashed_messages(with_categories=True)
     return render_template(
         'id_urls.html',
@@ -114,7 +128,7 @@ def url_check(id):
     cur.execute("SELECT name, created_at FROM urls WHERE id=(%s);", [id])
     data = cur.fetchall()
     # добавляем время последней проверки
-    cur.execute("SELECT created_at FROM url_checks WHERE url_id=(%s) ORDER BY created_at DESC NULLS LAST LIMIT 1;", [id])
+    cur.execute("SELECT created_at FROM urls WHERE id=(%s);", [id])
     data_time = cur.fetchall()
     if data_time != []:
         time = str(data_time[0][0])[:10]
@@ -148,7 +162,7 @@ def url_check(id):
         response = req_url(url[0][0])
         # добавляем флеш в зависимости от ответа и вставляем если можем
         if response == 200:
-            flash('All nice!', 'sucess')
+            flash('Проверка завершена!', 'sucess')
             # вызываем вторую часть проверки
             h1_tag, title_tag, meta_tag = tags_check(url[0][0])
             # вставляем проверку
@@ -159,7 +173,7 @@ def url_check(id):
             conn.commit()
             print('Insert into db Cheks successfully')
         else:
-            flash('Bad request', 'error')
+            flash('Не удалось выполнить запрос', 'error')
         return redirect(
             url_for('url_check', id=id)
             )
