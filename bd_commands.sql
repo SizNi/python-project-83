@@ -14,3 +14,5 @@ CREATE TABLE url_checks (
     created_at timestamp
 );
 INSERT INTO url_checks (url_id, status_code, created_at) VALUES (49, 200, '2022-12-17 19:23:10.922933');
+TRUNCATE TABLE urls RESTART IDENTITY CASCADE;
+TRUNCATE TABLE url_checks;

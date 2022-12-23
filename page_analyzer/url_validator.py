@@ -25,7 +25,7 @@ def url_val(url):
                 return normalize_url
             # если нашлось - возвращаем ошибку и id:
             else:
-                return ('error, in base', data[0][0])     
+                return ('error, in base', data[0][0])
         else:
             return 'error format'
 
@@ -36,4 +36,3 @@ def normalize_ur(url):
     elif url[:5] == 'http:':
         return f'https{url[4:]}'
     return f'https://{url}'
-

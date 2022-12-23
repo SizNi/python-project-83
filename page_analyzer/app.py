@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, flash, redirect, get_flashed_messages, url_for
+from flask import Flask, render_template, request
+from flask import flash, redirect, get_flashed_messages, url_for
 import os
 import datetime
 from page_analyzer.connection import connect_db
@@ -54,10 +55,13 @@ def save_data():
             conn = connect_db()
             cur = conn.cursor()
             cur.execute(
-                """INSERT INTO urls (name, created_at) VALUES (%s,%s);""", (url, dt_now))
+                """INSERT INTO urls (name, created_at)
+                VALUES (%s,%s);""", (url, dt_now)
+                )
             conn.commit()
             cur.execute(
-                "SELECT id, name FROM urls ORDER BY id DESC NULLS LAST;")
+                "SELECT id, name FROM urls ORDER BY id DESC NULLS LAST;"
+                )
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
@@ -128,7 +132,8 @@ def url_check(id):
     else:
         time = ''
     # достаем старые проверки
-    cur.execute("SELECT * FROM url_checks WHERE url_id=(%s) ORDER BY id DESC;", [id])
+    cur.execute(
+        "SELECT * FROM url_checks WHERE url_id=(%s) ORDER BY id DESC;", [id])
     data_checks = cur.fetchall()
     # messages = get_flashed_messages(with_categories=True)
     # если дата не пустая и гет
@@ -161,8 +166,11 @@ def url_check(id):
             # вставляем проверку
             dt_now = str(datetime.datetime.now())
             cur.execute(
-                """INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s,%s,%s,%s,%s,%s);""", (
-                    id, response, h1_tag, title_tag, meta_tag, dt_now)
+                """INSERT INTO url_checks (url_id, status_code,
+                h1, title, description, created_at)
+                VALUES (%s,%s,%s,%s,%s,%s);""", (
+                    id, response, h1_tag, title_tag, meta_tag, dt_now
+                    )
             )
             conn.commit()
         else:

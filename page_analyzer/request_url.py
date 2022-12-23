@@ -10,5 +10,6 @@ def req_url(url):
         print(exc)
         return 'error'
 
+
 if __name__ == '__main__':
     req_url()

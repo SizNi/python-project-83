@@ -18,5 +18,6 @@ def connect_db():
     print("Database connected successfully")
     return conn
 
+
 if __name__ == '__main__':
     connect_db()

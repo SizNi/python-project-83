@@ -11,7 +11,7 @@ def tags_check(url):
     title_tag = (soup.find('title'))
     if title_tag is not None:
         title_tag = title_tag.text
-    meta_tag = (soup.find('meta', attrs = {'name':'description'}))
+    meta_tag = (soup.find('meta', attrs={'name': 'description'}))
     if meta_tag is not None:
         meta_tag = meta_tag['content']
     print(meta_tag)

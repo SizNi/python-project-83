@@ -7,4 +7,5 @@ exclude =
     env,
     .venv,
     .github,
+    __init__.py,
     .env
