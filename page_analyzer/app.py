@@ -6,6 +6,7 @@ import datetime
 from page_analyzer.connection import connect_db
 from page_analyzer.url_validator import url_val
 from page_analyzer.request_url import req_url
+from page_analyzer.find_tags import tags_check
 
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -86,11 +87,22 @@ def id_urls(id):
     cur = conn.cursor()
     cur.execute("SELECT * FROM urls WHERE id=(%s);", [id])
     data = cur.fetchall()
+    cur.execute(
+        "SELECT created_at, status_code FROM url_checks WHERE url_id=(%s);", [id]
+    )
+    data_checks = cur.fetchall()
+    if data_checks != []:
+        time = str(data_checks[-1][0])[:10]
+    else:
+        time = 0
+        data_checks = [(0)]
     messages = get_flashed_messages(with_categories=True)
     return render_template(
         'id_urls.html',
         data=data,
-        messages=messages
+        messages=messages,
+        data_checks=data_checks,
+        time=time
     )
 
 
@@ -137,10 +149,12 @@ def url_check(id):
         # добавляем флеш в зависимости от ответа и вставляем если можем
         if response == 200:
             flash('All nice!', 'sucess')
+            # вызываем вторую часть проверки
+            h1_tag, title_tag, meta_tag = tags_check(url[0][0])
             # вставляем проверку
             dt_now = str(datetime.datetime.now())
             cur.execute(
-            """INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s,%s,%s);""", (id, response, dt_now)
+            """INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s,%s,%s,%s,%s,%s);""", (id, response, h1_tag, title_tag, meta_tag, dt_now)
             )
             conn.commit()
             print('Insert into db Cheks successfully')

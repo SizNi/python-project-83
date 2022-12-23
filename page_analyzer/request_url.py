@@ -10,8 +10,5 @@ def req_url(url):
         print(exc)
         return 'error'
 
-url = 'https://ya.ru'
-req_url(url)
-    
-#if __name__ == '__main__':
-    #req_url()
+if __name__ == '__main__':
+    req_url()
