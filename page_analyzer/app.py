@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, flash, redirect, get_flashed_messages, url_for
 import os
-import jinja2
 import datetime
 from page_analyzer.connection import connect_db
 from page_analyzer.url_validator import url_val
@@ -57,22 +56,17 @@ def save_data():
             cur.execute(
                 """INSERT INTO urls (name, created_at) VALUES (%s,%s);""", (url, dt_now))
             conn.commit()
-            print('Insert into db successfully')
             cur.execute(
                 "SELECT id, name FROM urls ORDER BY id DESC NULLS LAST;")
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
             flash('Cтраница успешно добавлена!', 'sucess')
-            return redirect (
+            return redirect(
                 url_for(
                     'url_check',
-                    id = data_left[0][0]
-            )
+                    id=data_left[0][0]
                 )
-            return render_template(
-                'urls.html',
-                data=data
             )
         else:
             return render_template(
@@ -87,8 +81,6 @@ def save_data():
         data_left = cur.fetchall()
         data_right = c_insert()
         data = data_addition(data_left, data_right)
-        print(f'{data_right}--------')
-        print(data)
         return render_template(
             'urls.html',
             data=data
@@ -102,7 +94,8 @@ def id_urls(id):
     cur.execute("SELECT * FROM urls WHERE id=(%s);", [id])
     data = cur.fetchall()
     cur.execute(
-        "SELECT created_at, status_code FROM url_checks WHERE url_id=(%s);", [id]
+        "SELECT created_at, status_code FROM url_checks WHERE url_id=(%s);", [
+            id]
     )
     data_checks = cur.fetchall()
     if data_checks != []:
@@ -135,7 +128,7 @@ def url_check(id):
     else:
         time = ''
     # достаем старые проверки
-    cur.execute("SELECT * FROM url_checks WHERE url_id=(%s);", [id])
+    cur.execute("SELECT * FROM url_checks WHERE url_id=(%s) ORDER BY id DESC;", [id])
     data_checks = cur.fetchall()
     # messages = get_flashed_messages(with_categories=True)
     # если дата не пустая и гет
@@ -168,16 +161,16 @@ def url_check(id):
             # вставляем проверку
             dt_now = str(datetime.datetime.now())
             cur.execute(
-            """INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s,%s,%s,%s,%s,%s);""", (id, response, h1_tag, title_tag, meta_tag, dt_now)
+                """INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) VALUES (%s,%s,%s,%s,%s,%s);""", (
+                    id, response, h1_tag, title_tag, meta_tag, dt_now)
             )
             conn.commit()
-            print('Insert into db Cheks successfully')
         else:
             flash('Не удалось выполнить запрос', 'error')
         return redirect(
             url_for('url_check', id=id)
-            )
-        
+        )
+
 
 if __name__ == '__main__':
     app.run()
