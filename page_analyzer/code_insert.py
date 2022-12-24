@@ -12,18 +12,20 @@ def c_insert():
     )
     data = cur.fetchall()
     id = data[0][0]
-    for i in range(1, id + 1):
-        cur.execute(
-            """SELECT created_at, status_code
-            FROM url_checks WHERE url_id=(%s)
-            ORDER BY created_at DESC LIMIT 1;""",
-            [i]
-        )
-        data = cur.fetchall()
-        if data == []:
-            data = [('', '')]
-        result_list.extend(data)
-    return result_list
+    if id is not None:
+        for i in range(1, id + 1):
+            cur.execute(
+                """SELECT created_at, status_code
+                FROM url_checks WHERE url_id=(%s)
+                ORDER BY created_at DESC LIMIT 1;""",
+                [i]
+            )
+            data = cur.fetchall()
+            if data == []:
+                data = [('', '')]
+            result_list.extend(data)
+        return result_list
+    return []
 
 
 def data_addition(data_left, data_right):

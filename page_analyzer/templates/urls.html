@@ -43,6 +43,7 @@
                 <th>Последняя проверка</th>
                 <th>Код ответа</th>
               </tr>
+              {% if data %}
               {% for elem in data %}
                 <tr>
                   <td>{{ elem[0] }}</td>
@@ -51,6 +52,7 @@
                   <td>{{ elem[3] }}</td>
                 </tr>
               {% endfor %}
+              {% endif %}
             </tbody>
           </table>
         </div>
