@@ -15,7 +15,8 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
+app.secret_key = SECRET_KEY
 
 
 @app.route('/')
