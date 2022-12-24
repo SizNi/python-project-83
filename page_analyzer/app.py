@@ -57,11 +57,11 @@ def save_data():
             cur.execute(
                 """INSERT INTO urls (name, created_at)
                 VALUES (%s,%s);""", (url, dt_now)
-                )
+            )
             conn.commit()
             cur.execute(
                 "SELECT id, name FROM urls ORDER BY id DESC NULLS LAST;"
-                )
+            )
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
@@ -170,7 +170,7 @@ def url_check(id):
                 h1, title, description, created_at)
                 VALUES (%s,%s,%s,%s,%s,%s);""", (
                     id, response, h1_tag, title_tag, meta_tag, dt_now
-                    )
+                )
             )
             conn.commit()
         else:
@@ -179,13 +179,11 @@ def url_check(id):
             url_for('url_check', id=id)
         )
 
+
+@app.errorhandler(500)
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
-@app.errorhandler(500)
-def page_not_found(e):
-    return render_template('404.html'), 500
 
 
 if __name__ == '__main__':
