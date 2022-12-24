@@ -7,8 +7,7 @@ install: # install poetry
 pytest:
 	poetry run pytest
 
-lint: # запуск flake8 на проект python-project-50
-	poetry run flake8
+#lint: запуск flake8 на проект python-project-50 poetry run flake8
 
 # запуск сервера в продакшене по адресу http://localhost:8000 
 #если в переменных окружения не указан порт (он необходим для деплоя приложения)
