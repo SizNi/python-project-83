@@ -38,18 +38,18 @@ def save_data():
         url = url_val(url)
         # ошибка в случае невведенного адреса
         if url == 'error none':
-            flash("Поле ввода не может быть пустым!", 'error')
+            flash("URL обязателен", 'error')
             return redirect('/')
         # ошибка на False от валидатора
         elif url == 'error format':
-            flash("Wrong format of URL!", 'error')
+            flash("Некорректный URL", 'error')
             return redirect('/')
         # ошибка в базе такой урл уже есть
         elif url[0] == 'error, in base':
-            flash("Страница уже была добавлена", 'error')
+            flash("Страница уже существует", 'info')
             id = url[1]
             return redirect(
-                url_for('id_urls', id=id)
+                url_for('url_check', id=id)
             )
         elif url is not False:
             conn = connect_db()
@@ -160,7 +160,7 @@ def url_check(id):
         response = req_url(url[0][0])
         # добавляем флеш в зависимости от ответа и вставляем если можем
         if response == 200:
-            flash('Проверка завершена!', 'sucess')
+            flash('Страница успешно проверена', 'sucess')
             # вызываем вторую часть проверки
             h1_tag, title_tag, meta_tag = tags_check(url[0][0])
             # вставляем проверку
