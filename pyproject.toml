@@ -10,7 +10,7 @@ packages = [{include = "page_analyzer"}]
 python = "^3.8.1"
 flask = "^2.2.2"
 gunicorn = "^20.1.0"
-flake8 = "^6.0.0"
+flake8 = "^5.0.4"
 pytest = "^7.2.0"
 python-dotenv = "^0.21.0"
 flask-wtf = "^1.0.1"
