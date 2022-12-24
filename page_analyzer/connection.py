@@ -7,7 +7,7 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 
-def connect_db():
+def connect_db_2():
     DB_NAME = os.environ.get('DB_NAME')
     DB_USER = os.environ.get('DB_USER')
     DB_PASS = os.environ.get('DB_PASS')
@@ -16,6 +16,11 @@ def connect_db():
     conn = psycopg2.connect(database=DB_NAME, user=DB_USER, password=DB_PASS,
                             host=DB_HOST, port=DB_PORT)
     print("Database connected successfully")
+    return conn
+
+def connect_db():
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
 
 
