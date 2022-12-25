@@ -23,11 +23,9 @@
 
     <main class="flex-grow-1">
       {% if messages %}
-        <div class="alert alert-danger" role="alert">
-          {% for category, message in messages %}
-            <div class="{{ category }}">{{ message }}</div>
-          {% endfor %}
-        </div>
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+        {% endfor %}
       {% endif %}
       <div class="container-lg mt-3">
         <h1></h1>

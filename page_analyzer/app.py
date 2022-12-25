@@ -55,11 +55,11 @@ def save_data():
         url = url_val(url)
         # ошибка в случае невведенного адреса
         if url == 'error none':
-            flash("URL обязателен", 'error')
+            flash("URL обязателен", 'danger')
             return redirect('/')
         # ошибка на False от валидатора
         elif url == 'error format':
-            flash("Некорректный URL", 'error')
+            flash("Некорректный URL", 'danger')
             return redirect('/')
         # ошибка в базе такой урл уже есть
         elif url[0] == 'error, in base':
@@ -82,7 +82,7 @@ def save_data():
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
-            flash('Cтраница успешно добавлена', 'sucess')
+            flash('Cтраница успешно добавлена', 'success')
             return redirect(
                 url_for(
                     'url_check',
@@ -177,7 +177,7 @@ def url_check(id):
         response = req_url(url[0][0])
         # добавляем флеш в зависимости от ответа и вставляем если можем
         if response == 200:
-            flash('Страница успешно проверена', 'sucess')
+            flash('Страница успешно проверена', 'success')
             # вызываем вторую часть проверки
             h1_tag, title_tag, meta_tag = tags_check(url[0][0])
             # вставляем проверку
@@ -191,7 +191,7 @@ def url_check(id):
             )
             conn.commit()
         else:
-            flash('Произошла ошибка при проверке', 'error')
+            flash('Произошла ошибка при проверке', 'danger')
         return redirect(
             url_for('url_check', id=id)
         )
