@@ -22,7 +22,7 @@ app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
-#time.sleep(20)
+time.sleep(20)
 
 def test_connection():
     connect = connect_db()
@@ -192,7 +192,7 @@ def url_check(id):
             )
             conn.commit()
         else:
-            flash('Не удалось выполнить запрос', 'error')
+            flash('Произошла ошибка при проверке', 'error')
         return redirect(
             url_for('url_check', id=id)
         )
