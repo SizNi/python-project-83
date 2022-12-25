@@ -28,9 +28,8 @@
           {% elif category == 'info' %}
             <div class="alert alert-info" role="alert">
           {% else %}
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-success" role="alert">{{ message }}
           {% endif %}
-          <div class="{{ category }}">{{ message }}</div>
         {% endfor %}
         </div>
       {% endif %}
