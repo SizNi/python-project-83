@@ -4,37 +4,22 @@ from flask import (
     request, flash,
     redirect, get_flashed_messages,
     url_for
-    )
-import os, datetime
+)
+import os
+import datetime
 from page_analyzer.connection import connect_db
 from page_analyzer.url_validator import url_val
 from page_analyzer.request_url import req_url
 from page_analyzer.find_tags import tags_check
 from page_analyzer.code_insert import c_insert, data_addition
-import time
 
 
-#dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-#if os.path.exists(dotenv_path):
 load_dotenv()
 
 app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
-#time.sleep(2)
-
-""" def test_connection():
-    connect = connect_db()
-    cur = connect.cursor()
-    cur.execute(
-        "SELECT count(*) FROM urls;"
-    )
-    data = cur.fetchone()
-    print(data) """
-
-#test_connection()
-    
 
 @app.route('/')
 def start():
