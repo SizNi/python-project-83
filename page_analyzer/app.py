@@ -82,7 +82,7 @@ def save_data():
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
-            flash('Cтраница успешно добавлена!', 'sucess')
+            flash('Cтраница успешно добавлена', 'sucess')
             return redirect(
                 url_for(
                     'url_check',
