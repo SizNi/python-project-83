@@ -22,6 +22,7 @@ app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
+time.sleep(2)
 
 def test_connection():
     connect = connect_db()
@@ -32,7 +33,7 @@ def test_connection():
     data = cur.fetchone()
     print(data)
 
-#test_connection()
+test_connection()
     
 
 @app.route('/')
