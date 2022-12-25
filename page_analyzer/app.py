@@ -24,14 +24,14 @@ app.secret_key = SECRET_KEY
 
 #time.sleep(2)
 
-def test_connection():
+""" def test_connection():
     connect = connect_db()
     cur = connect.cursor()
     cur.execute(
         "SELECT count(*) FROM urls;"
     )
     data = cur.fetchone()
-    print(data)
+    print(data) """
 
 #test_connection()
     
