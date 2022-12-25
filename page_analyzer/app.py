@@ -32,7 +32,7 @@ def test_connection():
     data = cur.fetchone()
     print(data)
 
-test_connection()
+#test_connection()
     
 
 @app.route('/')
