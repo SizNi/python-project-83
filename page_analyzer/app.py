@@ -1,8 +1,11 @@
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
-from flask import flash, redirect, get_flashed_messages, url_for
-import os
-import datetime
+from flask import (
+    Flask, render_template,
+    request, flash,
+    redirect, get_flashed_messages,
+    url_for
+    )
+import os, datetime
 from page_analyzer.connection import connect_db
 from page_analyzer.url_validator import url_val
 from page_analyzer.request_url import req_url
