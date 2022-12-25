@@ -14,15 +14,15 @@ from page_analyzer.code_insert import c_insert, data_addition
 import time
 
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
+#dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+#if os.path.exists(dotenv_path):
+load_dotenv()
 
 app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
-time.sleep(20)
+#time.sleep(20)
 
 def test_connection():
     connect = connect_db()
