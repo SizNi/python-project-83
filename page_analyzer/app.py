@@ -22,7 +22,6 @@ app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
-time.sleep(20)
 
 def test_connection():
     connect = connect_db()
