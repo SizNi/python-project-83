@@ -21,6 +21,17 @@ app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
+def test_connection():
+    connect = connect_db()
+    cur = connect.cursor()
+    cur.execute(
+        "SELECT count(*) FROM urls;"
+    )
+    data = cur.fetchone()
+    print(data)
+
+test_connection()
+    
 
 @app.route('/')
 def start():
