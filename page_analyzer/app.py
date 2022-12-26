@@ -19,7 +19,6 @@ load_dotenv()
 app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
-print('нихуя не работает-------------------------------------------------------')
 
 @app.route('/')
 def start():
