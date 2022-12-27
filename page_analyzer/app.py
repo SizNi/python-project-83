@@ -166,6 +166,8 @@ def url_check(id):
             # вызываем вторую часть проверки
             h1_tag, title_tag, meta_tag = tags_check(url[0][0])
             # вставляем проверку
+            if len(meta_tag) > 255:
+                meta_tag = f'{meta_tag[:250]}...'
             dt_now = str(datetime.datetime.now())
             cur.execute(
                 """INSERT INTO url_checks (url_id, status_code,
