@@ -68,6 +68,7 @@ def save_data():
             data_right = c_insert()
             data = data_addition(data_left, data_right)
             flash('Cтраница успешно добавлена', 'success')
+            conn.close()
             return redirect(
                 url_for(
                     'url_check',
@@ -87,6 +88,7 @@ def save_data():
         data_left = cur.fetchall()
         data_right = c_insert()
         data = data_addition(data_left, data_right)
+        conn.close()
         return render_template(
             'urls.html',
             data=data
@@ -110,6 +112,7 @@ def id_urls(id):
         time = ''
         data_checks = [('')]
     messages = get_flashed_messages(with_categories=True)
+    conn.close()
     return render_template(
         'id_urls.html',
         data=data,
@@ -140,6 +143,7 @@ def url_check(id):
     # messages = get_flashed_messages(with_categories=True)
     # если дата не пустая и гет
     if request.method == 'GET' and data_checks != []:
+        conn.close()
         return render_template(
             'url_check.html',
             id=id,
@@ -148,6 +152,7 @@ def url_check(id):
             data_checks=data_checks
         )
     elif request.method == 'GET' and data_checks == []:
+        conn.close()
         return render_template(
             'url_check.html',
             id=id,
@@ -177,8 +182,10 @@ def url_check(id):
                 )
             )
             conn.commit()
+            conn.close()
         else:
             flash('Произошла ошибка при проверке', 'danger')
+            conn.close()
         return redirect(
             url_for('url_check', id=id)
         )
