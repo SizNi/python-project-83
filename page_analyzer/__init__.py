@@ -1,3 +1,3 @@
-from .app import *
+from .app import * # noqa
 
-__all__ = ['app']
+__all__ = ['app'] # noqa

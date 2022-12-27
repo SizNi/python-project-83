@@ -33,7 +33,7 @@ def data_addition(data_left, data_right):
     max_len = len(data_left)
     i = 1
     while i <= max_len:
-        n = (data_left[i-1][0], data_left[i-1][1],
+        n = (data_left[i - 1][0], data_left[i - 1][1],
              data_right[-i][0], data_right[-i][1])
         data.append(n)
         i += 1

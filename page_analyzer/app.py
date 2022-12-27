@@ -16,8 +16,8 @@ from page_analyzer.code_insert import c_insert, data_addition
 load_dotenv()
 
 app = Flask(__name__)
-SECRET_KEY = os.getenv('SECRET_KEY')
-app.secret_key = SECRET_KEY
+app.secret_key = os.getenv('SECRET_KEY')
+
 
 @app.route('/')
 def start():
@@ -64,7 +64,7 @@ def save_data():
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
-            flash('Cтраница успешно добавлена', 'success')
+            flash('Страница успешно добавлена', 'success')
             conn.close()
             return redirect(
                 url_for(
