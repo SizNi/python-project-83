@@ -34,5 +34,5 @@ def normalize_ur(url):
     if url[:5] == 'https':
         return url
     elif url[:5] == 'http:':
-        return f'https{url[4:]}'
+        return f'http{url[4:]}'
     return f'https://{url}'

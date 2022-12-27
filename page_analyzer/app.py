@@ -2,8 +2,7 @@ from dotenv import load_dotenv
 from flask import (
     Flask, render_template,
     request, flash,
-    redirect, get_flashed_messages,
-    url_for
+    redirect, url_for
 )
 import os
 import datetime
@@ -65,7 +64,7 @@ def save_data():
             data_left = cur.fetchall()
             data_right = c_insert()
             data = data_addition(data_left, data_right)
-            flash('Cтраница успешно добавлена', 'success')
+            flash('Страница успешно добавлена', 'success')
             conn.close()
             return redirect(
                 url_for(
