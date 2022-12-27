@@ -39,11 +39,11 @@ def save_data():
         # ошибка в случае невведенного адреса
         if url == 'error none':
             flash("URL обязателен", 'danger')
-            return render_template('main_page.html')
+            return render_template('main_page.html'), 422
         # ошибка на False от валидатора
         elif url == 'error format':
             flash("Некорректный URL", 'danger')
-            return render_template('main_page.html')
+            return render_template('main_page.html'), 422
         # ошибка в базе такой урл уже есть
         elif url[0] == 'error, in base':
             flash("Страница уже существует", 'info')
