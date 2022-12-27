@@ -22,10 +22,8 @@ app.secret_key = SECRET_KEY
 
 @app.route('/')
 def start():
-    messages = get_flashed_messages(with_categories=True)
     return render_template(
-        'main_page.html',
-        messages=messages
+        'main_page.html'
     )
 
 
@@ -41,11 +39,11 @@ def save_data():
         # ошибка в случае невведенного адреса
         if url == 'error none':
             flash("URL обязателен", 'danger')
-            return redirect('/')
+            return render_template('main_page.html')
         # ошибка на False от валидатора
         elif url == 'error format':
             flash("Некорректный URL", 'danger')
-            return redirect('/')
+            return render_template('main_page.html')
         # ошибка в базе такой урл уже есть
         elif url[0] == 'error, in base':
             flash("Страница уже существует", 'info')
@@ -95,34 +93,7 @@ def save_data():
         )
 
 
-@app.route('/urls/<id>')
-def id_urls(id):
-    conn = connect_db()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM urls WHERE id=(%s);", [id])
-    data = cur.fetchall()
-    cur.execute(
-        "SELECT created_at, status_code FROM url_checks WHERE url_id=(%s);", [
-            id]
-    )
-    data_checks = cur.fetchall()
-    if data_checks != []:
-        time = str(data_checks[-1][0])[:10]
-    else:
-        time = ''
-        data_checks = [('')]
-    messages = get_flashed_messages(with_categories=True)
-    conn.close()
-    return render_template(
-        'id_urls.html',
-        data=data,
-        messages=messages,
-        data_checks=data_checks,
-        time=time
-    )
-
-
-@app.route('/urls/<id>/checks', methods=['GET', 'POST'])
+@app.route('/urls/<id>', methods=['GET', 'POST'])
 def url_check(id):
     # подключаемся к базе urls
     conn = connect_db()

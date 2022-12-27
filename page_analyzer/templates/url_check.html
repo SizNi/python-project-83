@@ -9,7 +9,6 @@
   {% endwith %}
   <div class="container-lg mt-3">
     <h1>Сайт: {{ url }}</h1>
-    <a>Страница успешно добавлена</a>
     <div class="table-responsive">
       <table class="table table-bordered table-hover text-nowrap" data-test="url">
         <tbody>
@@ -29,7 +28,7 @@
       </table>
     </div>
     <h2 class="mt-5 mb-3">Проверки</h2>
-    <form method="post" action="/urls/{{ id }}/checks">
+    <form method="post" action="/urls/{{ id }}">
       <input type="submit" class="btn btn-primary" value="Запустить проверку" />
     </form>
 
