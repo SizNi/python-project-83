@@ -2,11 +2,6 @@
 {% block content %}
   <div class="container-lg mt-3">
     <h1>Сайты</h1>
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
     <div class="table-responsive">
       <table class="table table-bordered table-hover text-nowrap" data-test="urls">
         <tbody>
